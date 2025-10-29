@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Diet & Nutrition</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #fcfdfc; color: #333; }
+        .container { max-width: 800px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+        h1 { color: #2d3436; text-align: center; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #0984e3; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #74b9ff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ccc; }
+        th { background-color: #00b894; color: white; }
+        img { margin-top: 20px; width: 100%; height: auto; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Smart Diet & Nutrition Recommendation</h1>
+        <form method="POST">
+            <label>Your Weight (kg):</label>
+            <input type="number" name="weight" placeholder="Enter your weight" required>
+            <label>Activity Level:</label>
+            <select name="activity" required>
+                <option value="sedentary">Sedentary</option>
+                <option value="moderate">Moderate</option>
+                <option value="active">Active</option>
+            </select>
+            <button type="submit">Get Meal Plan</button>
+        </form>
+
+        {% if daily %}
+            <h2>Estimated Daily Calories: {{ daily | round }}</h2>
+        {% endif %}
+
+        {% if meals %}
+            <h3>Recommended Meals:</h3>
+            <table>
+                <tr>
+                    <th>Food</th>
+                    <th>Calories</th>
+                    <th>Protein (g)</th>
+                    <th>Carbs (g)</th>
+                    <th>Fat (g)</th>
+                </tr>
+                {% for meal in meals %}
+                <tr>
+                    {% for item in meal %}
+                    <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+
+            {% if chart_url %}
+                <h3>Nutrition Visualization</h3>
+                <img src="data:image/png;base64,{{ chart_url }}">
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
