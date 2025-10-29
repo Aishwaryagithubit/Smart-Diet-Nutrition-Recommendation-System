@@ -1,1 +1,1 @@
-# Smart-Diet-Nutrition-Recommendation-System
+# Smart Diet & Nutrition Recommendation System
