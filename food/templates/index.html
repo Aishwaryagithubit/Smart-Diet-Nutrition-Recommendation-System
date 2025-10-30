@@ -3,40 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Smart Diet & Nutrition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #fcfdfc; color: #333; }
-        .container { max-width: 800px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
-        h1 { color: #2d3436; text-align: center; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-        button { background-color: #0984e3; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #74b9ff; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f4faf6; color: #333; }
+        .container { max-width: 850px; margin: 50px auto; background: #fff; padding: 35px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2d3436; text-align: center; margin-bottom: 20px; }
+        label { font-weight: 600; }
+        input, select { width: 100%; padding: 10px; margin: 8px 0 15px; border-radius: 6px; border: 1px solid #ccc; }
+        button { background-color: #00b894; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: #019267; }
+        .icon { margin-right: 5px; }
+        .btn-download { background-color: #0984e3; margin-left: 10px; }
+        .btn-download:hover { background-color: #74b9ff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ccc; }
         th { background-color: #00b894; color: white; }
         img { margin-top: 20px; width: 100%; height: auto; border-radius: 10px; }
+        .explanation { background: #ecf9f1; padding: 15px; border-left: 4px solid #00b894; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1> Smart Diet & Nutrition Recommendation</h1>
+        <h1><i class="fa-solid fa-apple-whole"></i> Smart Diet & Nutrition</h1>
         <form method="POST">
-            <label>Your Weight (kg):</label>
+            <label><i class="fa-solid fa-weight-scale"></i> Your Weight (kg):</label>
             <input type="number" name="weight" placeholder="Enter your weight" required>
-            <label>Activity Level:</label>
+
+            <label><i class="fa-solid fa-person-walking"></i> Activity Level:</label>
             <select name="activity" required>
                 <option value="sedentary">Sedentary</option>
                 <option value="moderate">Moderate</option>
                 <option value="active">Active</option>
             </select>
-            <button type="submit">Get Meal Plan</button>
+
+            <label><i class="fa-solid fa-utensils"></i> Diet Preference:</label>
+            <select name="diet" required>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+                <option value="Vegan">Vegan</option>
+            </select>
+
+            <label><i class="fa-solid fa-dumbbell"></i> Goal:</label>
+            <select name="goal" required>
+                <option value="loss">Weight Loss</option>
+                <option value="gain">Muscle Gain</option>
+            </select>
+
+            <div style="text-align:center;">
+                <button type="submit"><i class="fa-solid fa-bowl-food icon"></i> Get Meal Plan</button>
+            </div>
         </form>
 
-        {% if daily %}
-            <h2>Estimated Daily Calories: {{ daily | round }}</h2>
-        {% endif %}
-
         {% if meals %}
-            <h3>Recommended Meals:</h3>
+            <h3>Full-Day Meal Plan</h3>
             <table>
                 <tr>
                     <th>Food</th>
@@ -47,9 +66,11 @@
                 </tr>
                 {% for meal in meals %}
                 <tr>
-                    {% for item in meal %}
-                    <td>{{ item }}</td>
-                    {% endfor %}
+                    <td>{{ meal['Food'] }}</td>
+                    <td>{{ meal['Calories'] }}</td>
+                    <td>{{ meal['Protein'] }}</td>
+                    <td>{{ meal['Carbs'] }}</td>
+                    <td>{{ meal['Fat'] }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -58,9 +79,26 @@
                 <h3>Nutrition Visualization</h3>
                 <img src="data:image/png;base64,{{ chart_url }}">
             {% endif %}
+
+            {% if explanation %}
+                <div class="explanation">
+                    <strong>Why this meal plan is good for you:</strong><br>
+                    {{ explanation }}
+                </div>
+            {% endif %}
+
+            <!-- Download PDF Form -->
+            <form method="POST" action="/generate_pdf" style="text-align:center; margin-top:20px;">
+                {% for meal in meals %}
+                    <input type="hidden" name="meals" value="{{ meal['Food'] }},{{ meal['Calories'] }},{{ meal['Protein'] }},{{ meal['Carbs'] }},{{ meal['Fat'] }}">
+                {% endfor %}
+                <button type="submit" class="btn-download"><i class="fa-solid fa-file-pdf icon"></i> Download PDF</button>
+            </form>
         {% endif %}
     </div>
 </body>
 </html>
+
+
 
 
