@@ -14,9 +14,7 @@ import base64
 
 app = Flask(__name__)
 
-# ===========================
 # Load and clean dataset
-# ===========================
 df = pd.read_csv("nutrients.csv")
 df.columns = df.columns.str.strip()
 
@@ -39,9 +37,9 @@ def classify_type(category):
 df["Type"] = df["Category"].apply(classify_type)
 df = df[['Food', 'Calories', 'Protein', 'Carbs', 'Fat', 'Type']]
 
-# ===========================
+
 # Meal recommendation
-# ===========================
+
 def recommend_meals(calories_needed, diet_type):
     filtered = df[df['Type'].str.lower() == diet_type.lower()]
 
@@ -59,9 +57,9 @@ def recommend_meals(calories_needed, diet_type):
     recommended = filtered.iloc[indices[:, 0]]
     return recommended.to_dict(orient='records')
 
-# ===========================
+
 # Nutrition chart
-# ===========================
+
 def create_chart(meals):
     if not meals:
         return None
@@ -94,9 +92,9 @@ def create_chart(meals):
     plt.close()
     return chart_url
 
-# ===========================
+
 # Home route
-# ===========================
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     meals = None
@@ -140,9 +138,9 @@ def home():
     return render_template('index.html', meals=meals, daily=daily_cal if meals else None,
                            diet=diet_type if meals else None, explanation=explanation, chart_url=chart_url)
 
-# ===========================
+
 # Generate PDF route
-# ===========================
+
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     meals = request.form.getlist('meals')
@@ -174,8 +172,9 @@ def generate_pdf():
 
     return send_file(doc_name, as_attachment=True)
 
-# ===========================
+
 # Run Flask
-# ===========================
+
 if __name__ == '__main__':
     app.run(debug=True)
+
