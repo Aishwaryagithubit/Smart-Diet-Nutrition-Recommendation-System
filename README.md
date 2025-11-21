@@ -2,6 +2,8 @@
 
 Smart Diet & Nutrition is a simple yet intelligent web application that generates personalized meal plans based on a user’s weight, activity level, diet preference, and fitness goal.
 The app uses dynamic HTML templates (Jinja2), calculates nutritional values for the day, and provides:
+
+
 ✔️ Fullday meal plan
 ✔️ Calorie breakdown
 ✔️ Auto generated nutrition chart
