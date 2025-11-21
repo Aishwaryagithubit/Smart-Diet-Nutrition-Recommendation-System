@@ -11,9 +11,8 @@ The app uses dynamic HTML templates (Jinja2), calculates nutritional values for 
 ✔️ Explanation of why the plan suits the user
 
 🚀 Features
-🔹 User Inputs
 
-Weight (kg)
+🔹 User Inputs Weight (kg)
 
 Activity Level: Sedentary / Moderate / Active
 
